@@ -1,0 +1,128 @@
+// ====================================================
+// PhotoAI Studio - Database Schema
+// PostgreSQL + Prisma ORM
+// ====================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ----------------------------------------------------
+// USER
+// ----------------------------------------------------
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String   // hashed with bcrypt
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  images          Image[]
+  people          Person[]
+  generatedImages GeneratedImage[]
+  passportSheets  PassportSheet[]
+
+  @@map("users")
+}
+
+// ----------------------------------------------------
+// IMAGE (every uploaded photo)
+// ----------------------------------------------------
+model Image {
+  id          String   @id @default(uuid())
+  url         String   // Cloudinary secure_url
+  publicId    String   // Cloudinary public_id (needed for deletion)
+  width       Int?
+  height      Int?
+  format      String?
+  createdAt   DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  faces  Face[]
+
+  @@map("images")
+  @@index([userId])
+}
+
+// ----------------------------------------------------
+// FACE (a single detected face inside an Image)
+// ----------------------------------------------------
+model Face {
+  id         String   @id @default(uuid())
+  embedding  Float[]  // face embedding vector from InsightFace
+  boxX       Float    // bounding box (for cropping/preview)
+  boxY       Float
+  boxWidth   Float
+  boxHeight  Float
+  createdAt  DateTime @default(now())
+
+  imageId String
+  image   Image  @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  personId String?
+  person   Person? @relation(fields: [personId], references: [id], onDelete: SetNull)
+
+  @@map("faces")
+  @@index([imageId])
+  @@index([personId])
+}
+
+// ----------------------------------------------------
+// PERSON (a group of faces belonging to the same identity)
+// ----------------------------------------------------
+model Person {
+  id        String   @id @default(uuid())
+  name      String   @default("Unknown")
+  coverUrl  String?  // thumbnail shown on People page
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  faces Face[]
+
+  @@map("people")
+  @@index([userId])
+}
+
+// ----------------------------------------------------
+// GENERATED IMAGE (OpenAI Images API results)
+// ----------------------------------------------------
+model GeneratedImage {
+  id        String   @id @default(uuid())
+  prompt    String
+  url       String
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("generated_images")
+  @@index([userId])
+}
+
+// ----------------------------------------------------
+// PASSPORT SHEET (generated printable A4 sheets)
+// ----------------------------------------------------
+model PassportSheet {
+  id        String   @id @default(uuid())
+  sourceUrl String   // original passport photo used
+  sheetUrl  String   // final generated A4 sheet
+  copies    Int      // 4, 6, 8, or 16
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("passport_sheets")
+  @@index([userId])
+}
