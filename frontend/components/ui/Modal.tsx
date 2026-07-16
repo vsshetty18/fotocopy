@@ -63,7 +63,7 @@ export default function Modal({
         className={cn(
           "relative bg-card border border-border rounded-card shadow-card-dark",
           "w-full max-w-md p-6",
-          "animate-in fade-in zoom-in-95 duration-150",
+          "modal-content-animate",
           className
         )}
       >
