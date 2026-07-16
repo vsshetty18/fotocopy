@@ -1,0 +1,78 @@
+/* ====================================================
+   Global Styles + Theme Variables
+   Defines exact color values for Light/Dark mode per
+   the spec, plus Tailwind base imports.
+   ==================================================== */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ----------------------------------------------------
+   LIGHT MODE (default — applied when <html> has no
+   "dark" class)
+   ---------------------------------------------------- */
+:root {
+  --color-background: #ffffff;      /* Background: White */
+  --color-card: #f7f8fa;            /* Cards: Off White */
+  --color-foreground: #0a1930;      /* Text: Dark Navy Blue */
+  --color-primary: #0a1930;         /* Buttons: Dark Navy Blue */
+  --color-primary-foreground: #ffffff; /* Text on buttons */
+  --color-border: #e5e7eb;
+  --color-muted: #6b7280;
+}
+
+/* ----------------------------------------------------
+   DARK MODE (applied when <html> has class="dark",
+   toggled by ThemeToggle.tsx)
+   ---------------------------------------------------- */
+.dark {
+  --color-background: #0a1930;      /* Background: Dark Navy Blue */
+  --color-card: #142544;            /* Cards: Slightly Lighter Blue */
+  --color-foreground: #ffffff;      /* Text: White */
+  --color-primary: #cfe0ff;         /* Buttons: Very Light Blue */
+  --color-primary-foreground: #0a1930; /* Text on buttons (dark, for contrast) */
+  --color-border: #22335a;
+  --color-muted: #8ca0c4;
+}
+
+/* ----------------------------------------------------
+   Base element styles
+   ---------------------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body {
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+/* Smooth theme transitions on cards/buttons too */
+button,
+.themed-transition {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Custom scrollbar — subtle, matches minimal aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
