@@ -76,3 +76,21 @@ button,
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+/* ----------------------------------------------------
+   Modal entrance animation — plain CSS, no extra
+   Tailwind plugin needed (keeps dependencies minimal).
+   ---------------------------------------------------- */
+@keyframes modal-content-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-content-animate {
+  animation: modal-content-in 0.15s ease-out;
+}
