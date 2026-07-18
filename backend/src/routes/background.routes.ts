@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { removeBackground } from "../controllers/background.controller";
+import { removeBackground } from "@imgly/background-removal-node";;
 import { authMiddleware } from "../middleware/auth.middleware";
 import { uploadSingle } from "../middleware/upload.middleware";
 
