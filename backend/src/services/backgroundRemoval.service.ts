@@ -5,7 +5,7 @@
 // no Python microservice, no Docker needed.
 // ====================================================
 
-import { removeBackground } from "@imgly/background-removal-node";
+import { removeBackground } from "@imgly/background-removal-node";;
 
 /**
  * Remove the background from an image buffer and return
