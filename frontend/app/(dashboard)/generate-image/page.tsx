@@ -1,9 +1,3 @@
-// ====================================================
-// Generate Image Page
-// Text-to-image generation via OpenAI, with a history
-// of previously generated images below.
-// ====================================================
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -34,8 +28,6 @@ export default function GenerateImagePage() {
       );
       setHistory(response.data.data!.images);
     } catch (err) {
-      // History failing to load isn't critical — the generate
-      // form still works, so we don't block the page on this.
       console.error(getErrorMessage(err));
     } finally {
       setIsLoadingHistory(false);
@@ -51,7 +43,6 @@ export default function GenerateImagePage() {
         prompt,
       });
       const newImage = response.data.data!;
-      // Prepend the new image to history immediately — no refetch needed
       setHistory((prev) => [newImage, ...prev]);
       setPrompt("");
     } catch (err) {
@@ -80,7 +71,6 @@ export default function GenerateImagePage() {
         {error && <p className="text-sm text-red-500 mt-3">{error}</p>}
       </Card>
 
-      {/* History */}
       <div className="mt-8">
         <h2 className="text-lg font-semibold text-foreground mb-4">
           Your generated images
