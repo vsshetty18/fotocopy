@@ -7,7 +7,7 @@
 import { Response } from "express";
 import { AuthRequest } from "../middleware/auth.middleware";
 import { asyncHandler, AppError } from "../middleware/error.middleware";
-import { removeImageBackground } from "../services/backgroundRemoval.service";
+import { removeBackground } from "@imgly/background-removal-node";;
 
 // ----------------------------------------------------
 // POST /api/background
